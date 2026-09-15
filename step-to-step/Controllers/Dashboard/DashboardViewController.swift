@@ -8,7 +8,12 @@
 import UIKit
 
 class DashboardViewController: UIViewController {
+
+
 	@IBOutlet weak var lblTitle: UILabel!
+	@IBOutlet weak var collectionView: UICollectionView!
+	
+	
 	var dashboardTitle: String {
 		fatalError("title should initilize on subclass")
 	}

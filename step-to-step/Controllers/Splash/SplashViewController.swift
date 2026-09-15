@@ -8,7 +8,7 @@
 import UIKit
 
 class SplashViewController: UIViewController{
-	let isPro:Bool = true
+	let isPro:Bool = false
 	override func viewDidLoad() {
 		print("Splash Loaded!")
 		navigateToDashboard()
