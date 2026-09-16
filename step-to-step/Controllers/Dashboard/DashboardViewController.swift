@@ -27,7 +27,12 @@ class DashboardViewController: UIViewController {
 	private func setupCollectionView(){
 		collectionView.delegate = self
 		collectionView.dataSource = self
-		let cell = UICollectionViewCell()
+		
+		let layout = UICollectionViewFlowLayout()
+		layout.scrollDirection = .vertical
+		layout.minimumLineSpacing = 0
+		layout.minimumInteritemSpacing = 0
+		collectionView.collectionViewLayout = layout
 		
 	}
 }
@@ -40,7 +45,7 @@ extension DashboardViewController: UICollectionViewDataSource {
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-		cell.contentView.backgroundColor = .systemBlue
+		cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? .systemBlue : .red
 		return cell
 	}
 	
@@ -50,7 +55,7 @@ extension DashboardViewController: UICollectionViewDataSource {
 
 extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: 100, height: 100)
+		return CGSize(width: collectionView.bounds.width, height: 100)
 	}
 }
 
