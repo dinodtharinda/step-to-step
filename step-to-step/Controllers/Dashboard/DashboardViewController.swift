@@ -18,6 +18,10 @@ class DashboardViewController: UIViewController {
 		fatalError("title should initilize on subclass")
 	}
 	
+	var posts:[Post] {
+		fatalError("initialize Posts")
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		lblTitle.text = dashboardTitle
@@ -40,7 +44,7 @@ class DashboardViewController: UIViewController {
 
 extension DashboardViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 10
+		return posts.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

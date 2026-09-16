@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		43768778305A916700B9FE34 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 43768777305A916700B9FE34 /* Alamofire */; };
+		4376877D305A970400B9FE34 /* ObjectMapper in Frameworks */ = {isa = PBXBuildFile; productRef = 4376877C305A970400B9FE34 /* ObjectMapper */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		43849421305915030081A61A /* step-to-step.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "step-to-step.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4376877D305A970400B9FE34 /* ObjectMapper in Frameworks */,
+				43768778305A916700B9FE34 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,8 @@
 			);
 			name = "step-to-step";
 			packageProductDependencies = (
+				43768777305A916700B9FE34 /* Alamofire */,
+				4376877C305A970400B9FE34 /* ObjectMapper */,
 			);
 			productName = "step-to-step";
 			productReference = 43849421305915030081A61A /* step-to-step.app */;
@@ -107,6 +116,10 @@
 			);
 			mainGroup = 43849418305915030081A61A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				43768776305A916700B9FE34 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				4376877B305A970400B9FE34 /* XCRemoteSwiftPackageReference "ObjectMapper" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 43849422305915030081A61A /* Products */;
 			projectDirPath = "";
@@ -341,6 +354,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		43768776305A916700B9FE34 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.12.2;
+			};
+		};
+		4376877B305A970400B9FE34 /* XCRemoteSwiftPackageReference "ObjectMapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tristanhimmelman/ObjectMapper";
+			requirement = {
+				kind = exactVersion;
+				version = 4.4.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		43768777305A916700B9FE34 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 43768776305A916700B9FE34 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		4376877C305A970400B9FE34 /* ObjectMapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4376877B305A970400B9FE34 /* XCRemoteSwiftPackageReference "ObjectMapper" */;
+			productName = ObjectMapper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 43849419305915030081A61A /* Project object */;
 }
