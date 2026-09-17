@@ -19,7 +19,7 @@ class DashboardViewController: UIViewController {
 	}
 	
 	var posts:[Post] {
-		fatalError("initialize Posts")
+		return []
 	}
 	
 	override func viewDidLoad() {
