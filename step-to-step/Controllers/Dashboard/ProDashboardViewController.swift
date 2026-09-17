@@ -11,7 +11,9 @@ import UIKit
 
 class ProDashboardViewController: DashboardViewController {
 	let ps = PostService()
+	let rs = RecipeService()
 	var localPosts: [Post] = []
+	var localRecipes: [Recipe] = []
 	
 	override var dashboardTitle: String {
 		return "Pro Dashboard"
@@ -19,14 +21,18 @@ class ProDashboardViewController: DashboardViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		fetchPost()
+		fetchData()
 	}
 	
 	override var posts: [Post] {
 		return localPosts
 	}
 	
-	func fetchPost(){
+	override var recipes: [Recipe] {
+		return localRecipes
+	}
+	
+	func fetchData(){
 		Task { [weak self] in
 			guard let `self` = self else {
 				return
@@ -34,6 +40,15 @@ class ProDashboardViewController: DashboardViewController {
 			localPosts = await self.ps.fetchAllPost()
 			applySnapshot()
 			
+		}
+		
+		Task {[weak self] in
+			guard let `self` = self else {
+				return
+			}
+			localRecipes = await self.rs.fetchRecipes()
+			applySnapshot()
+		
 		}
 		
 	}

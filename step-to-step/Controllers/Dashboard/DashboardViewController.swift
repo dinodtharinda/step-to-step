@@ -7,21 +7,23 @@
 
 import UIKit
 
-
-
 nonisolated enum PostSections: Hashable {
 	case post
+	case recipe
+}
+
+nonisolated enum DashboardItem: Hashable {
+	case post(Post)
+	case recipe(Recipe)
 }
 
 class DashboardViewController: UIViewController {
 
-
 	@IBOutlet weak var lblTitle: UILabel!
 	@IBOutlet weak var collectionView: UICollectionView!
 
-	typealias DiffableDataSource = UICollectionViewDiffableDataSource<PostSections,Post>
-	typealias Snapshot = NSDiffableDataSourceSnapshot<PostSections,Post>
-	
+	typealias DiffableDataSource = UICollectionViewDiffableDataSource<PostSections, DashboardItem>
+	typealias Snapshot = NSDiffableDataSourceSnapshot<PostSections, DashboardItem>
 
 	private var dataSource: DiffableDataSource?
 
@@ -29,7 +31,11 @@ class DashboardViewController: UIViewController {
 		fatalError("title should initilize on subclass")
 	}
 
-	var posts:[Post] {
+	var posts: [Post] {
+		return []
+	}
+
+	var recipes: [Recipe] {
 		return []
 	}
 
@@ -41,7 +47,7 @@ class DashboardViewController: UIViewController {
 		applySnapshot()
 	}
 
-	private func setupCollectionView(){
+	private func setupCollectionView() {
 		collectionView.delegate = self
 
 		let layout = UICollectionViewFlowLayout()
@@ -49,41 +55,53 @@ class DashboardViewController: UIViewController {
 		layout.minimumLineSpacing = 0
 		layout.minimumInteritemSpacing = 0
 		collectionView.collectionViewLayout = layout
-		let nib = UINib(nibName: "PostCollectionViewCell", bundle: nil)
-		collectionView.register(nib, forCellWithReuseIdentifier: "PostCollectionViewCell")
+		let postNib = UINib(nibName: "PostCollectionViewCell", bundle: nil)
+		collectionView.register(postNib, forCellWithReuseIdentifier: "PostCollectionViewCell")
+		
+		let recipeNib = UINib(nibName: "RecipeCollectionViewCell", bundle: nil)
+		collectionView.register(recipeNib, forCellWithReuseIdentifier: "RecipeCollectionViewCell")
+		
 
 	}
-	
-	private func setupDataSource(){
-		dataSource = DiffableDataSource(collectionView: collectionView){[weak self] collectionView, indexPath, postItem in
-			guard let `self` =  self else {
+
+	private func setupDataSource() {
+		dataSource = DiffableDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, postItem in
+			guard let `self` = self else {
 				return UICollectionViewCell()
 			}
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCollectionViewCell", for: indexPath) as! PostCollectionViewCell
-			cell.setupData(post: postItem)
-			return cell
+			switch postItem {
+			case .post(let posts):
+				let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCollectionViewCell", for: indexPath) as! PostCollectionViewCell
+				cell.setupData(post: posts)
+				return cell
+			case .recipe(let recipes):
+				let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCollectionViewCell", for: indexPath) as! RecipeCollectionViewCell
+				cell.setupData(recipe: recipes)
+				return cell
+			}
+
+			
 		}
 	}
 
-	 func applySnapshot(animating: Bool = true){
-		 guard let ds = dataSource else {
-			 return
-		 }
-		
+	func applySnapshot(animating: Bool = true) {
+		guard let ds = dataSource else {
+			return
+		}
+
 		var snapshot = Snapshot()
-		snapshot.appendSections([.post])
-		snapshot.appendItems(posts, toSection: .post)
-		ds.apply(snapshot, animatingDifferences: false)
+		snapshot.appendSections([.post, .recipe])
+		snapshot.appendItems(posts.map(DashboardItem.post),toSection: .post)
+		snapshot.appendItems(recipes.map(DashboardItem.recipe), toSection: .recipe)
 		
+		ds.apply(snapshot, animatingDifferences: false)
+
 	}
-	
+
 }
-
-
 
 extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		return CGSize(width: collectionView.bounds.width, height: 100)
 	}
 }
-
