@@ -18,7 +18,9 @@ struct AllPost: Mappable {
 
 }
 
-struct Post: Mappable {
+nonisolated struct Post: Mappable, Hashable {
+	
+
     var id: Int = 0
     var title: String = ""
     var body: String = ""
@@ -40,7 +42,7 @@ struct Post: Mappable {
     }
 }
 
-struct Reactions: Mappable {
+struct Reactions: Mappable, Hashable {
     var likes: Int = 0
     var dislikes: Int = 0
 

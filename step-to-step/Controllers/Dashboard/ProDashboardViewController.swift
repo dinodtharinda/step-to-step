@@ -32,7 +32,7 @@ class ProDashboardViewController: DashboardViewController {
 				return
 			}
 			localPosts = await self.ps.fetchAllPost()
-			self.collectionView.reloadData()
+			applySnapshot()
 			
 		}
 		
