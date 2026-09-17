@@ -54,14 +54,18 @@ class DashboardViewController: UIViewController {
 		layout.scrollDirection = .vertical
 		layout.minimumLineSpacing = 0
 		layout.minimumInteritemSpacing = 0
+		
 		collectionView.collectionViewLayout = layout
+		
+		
 		let postNib = UINib(nibName: "PostCollectionViewCell", bundle: nil)
 		collectionView.register(postNib, forCellWithReuseIdentifier: "PostCollectionViewCell")
 		
 		let recipeNib = UINib(nibName: "RecipeCollectionViewCell", bundle: nil)
 		collectionView.register(recipeNib, forCellWithReuseIdentifier: "RecipeCollectionViewCell")
 		
-
+		collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: SectionHeaderView.elementKind, withReuseIdentifier: SectionHeaderView.identifier)
+		
 	}
 
 	private func setupDataSource() {
@@ -79,7 +83,28 @@ class DashboardViewController: UIViewController {
 				cell.setupData(recipe: recipes)
 				return cell
 			}
-
+		}
+		
+		dataSource?.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+			guard let self,kind == SectionHeaderView.elementKind  else {
+				return nil
+			}
+			
+			let section = self.dataSource?.sectionIdentifier(for: indexPath.section)
+			
+			let header =  collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeaderView.identifier, for: indexPath) as! SectionHeaderView
+			
+			switch section {
+			case .post:
+				header.configure(icon: UIImage(named: "scanner.fill"), title: "POSTS")
+			case .recipe:
+				header.configure(icon: UIImage(named: "scanner.fill"), title: "RECIPES")
+			case .none:
+				header.configure(icon: UIImage(named: "scanner.fill"), title: "NO")
+			}
+			
+			
+			return header
 			
 		}
 	}
@@ -102,6 +127,10 @@ class DashboardViewController: UIViewController {
 
 extension DashboardViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		return CGSize(width: collectionView.bounds.width, height: 100)
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 		return CGSize(width: collectionView.bounds.width, height: 100)
 	}
 }
