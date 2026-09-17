@@ -37,6 +37,8 @@ class DashboardViewController: UIViewController {
 		layout.minimumLineSpacing = 0
 		layout.minimumInteritemSpacing = 0
 		collectionView.collectionViewLayout = layout
+		let nib = UINib(nibName: "PostCollectionViewCell", bundle: nil)
+		collectionView.register(nib, forCellWithReuseIdentifier: "PostCollectionViewCell")
 		
 	}
 }
@@ -48,8 +50,9 @@ extension DashboardViewController: UICollectionViewDataSource {
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-		cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? .systemBlue : .red
+		let post = posts[indexPath.row]
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCollectionViewCell", for: indexPath) as! PostCollectionViewCell
+		cell.setupData(post: post)
 		return cell
 	}
 	
