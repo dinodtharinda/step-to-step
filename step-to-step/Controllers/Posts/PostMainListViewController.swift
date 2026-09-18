@@ -25,7 +25,7 @@ class PostMainListViewController: UIViewController{
 	private var ps = PostService()
 	
 	private var collectionView: UICollectionView!
-
+	
 	private var posts: [Post] = []
 	
 	private var dataSource: DataSource?
@@ -34,12 +34,16 @@ class PostMainListViewController: UIViewController{
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupCollectionView()
+		setupDataSource()
+		fetchData()
 	}
 	
 	func setupCollectionView(){
-	
+		
 		view.backgroundColor = .white
-		let layout = UICollectionViewFlowLayout()
+		
+		let layout = makeLayout()
+		
 		collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +61,7 @@ class PostMainListViewController: UIViewController{
 		let postNib = UINib(nibName: "PostCollectionViewCell", bundle: nil)
 		collectionView.register(postNib, forCellWithReuseIdentifier:  "PostCollectionViewCell")
 		
-
+		
 	}
 	
 	private func fetchData(){
@@ -97,8 +101,70 @@ class PostMainListViewController: UIViewController{
 		
 		ds.apply(snapshot, animatingDifferences: animating)
 	}
-
+	
+	
 }
 
 
 
+extension PostMainListViewController {
+	
+	
+	private func makeLayout() -> UICollectionViewCompositionalLayout {
+		let layout = UICollectionViewCompositionalLayout {[weak self] index , env in
+			guard let `self` =  self else {
+				return nil
+			}
+			let sections = dataSource?.snapshot().sectionIdentifiers ?? []
+			
+			guard sections.indices.contains(index) else { return nil }
+			
+			return getSectionFor(section: sections[index])
+			
+		}
+		
+		return layout
+	}
+	
+	
+	private func getSectionFor(section:PostMainSection)-> NSCollectionLayoutSection {
+		
+		switch section {
+		case .post:
+			return createSection(itemWidth: .fractionalWidth(1),
+								 itemHeight: .absolute(100),
+								 groupWidth: .fractionalWidth(1),
+								 groupHeight: .absolute(100),
+								 interGroupSpace: 10,
+								 sectionInsets: NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+		}
+		
+	}
+	
+	private func createSection(
+		itemWidth: NSCollectionLayoutDimension,
+		itemHeight: NSCollectionLayoutDimension,
+		groupWidth: NSCollectionLayoutDimension,
+		groupHeight: NSCollectionLayoutDimension,
+		interItemSpace: NSCollectionLayoutSpacing = .fixed(0),
+		interGroupSpace: Double = 0,
+		sectionInsets: NSDirectionalEdgeInsets = .zero) -> NSCollectionLayoutSection {
+			let itemSize = NSCollectionLayoutSize(widthDimension: itemWidth, heightDimension: itemHeight)
+			
+			let item = NSCollectionLayoutItem(layoutSize: itemSize)
+			
+			let groupSize = NSCollectionLayoutSize(widthDimension: groupWidth, heightDimension: groupHeight)
+			
+			let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+			
+			group.interItemSpacing = interItemSpace
+			
+			let section = NSCollectionLayoutSection(group: group)
+			
+			section.interGroupSpacing = interGroupSpace
+			
+			section.contentInsets = sectionInsets
+			
+			return section
+		}
+}
