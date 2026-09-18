@@ -17,17 +17,20 @@ class SplashViewController: UIViewController{
 	
 	
 	private func navigateToDashboard(){
-		if isPro {
-			let identifier = "ProDashboardViewController"
-			let sb = UIStoryboard(name: Constants.Storyboard.Dashboard.rawValue, bundle: nil)
-			let vc = sb.instantiateViewController(withIdentifier: identifier)
+//		if isPro {
+//			let identifier = "ProDashboardViewController"
+//			let sb = UIStoryboard(name: Constants.Storyboard.Dashboard.rawValue, bundle: nil)
+//			let vc = sb.instantiateViewController(withIdentifier: identifier)
+//			navigationController?.pushViewController(vc, animated: true)
+//		} else {
+//			let identifier = "BasicDashboardViewController"
+//			let sb = UIStoryboard(name: Constants.Storyboard.Dashboard.rawValue, bundle: nil)
+//			let vc = sb.instantiateViewController(withIdentifier: identifier)
+//			navigationController?.pushViewController(vc, animated: true)
+//		}
+
+			let vc = PostMainListViewController()
 			navigationController?.pushViewController(vc, animated: true)
-		} else {
-			let identifier = "BasicDashboardViewController"
-			let sb = UIStoryboard(name: Constants.Storyboard.Dashboard.rawValue, bundle: nil)
-			let vc = sb.instantiateViewController(withIdentifier: identifier)
-			navigationController?.pushViewController(vc, animated: true)
-		}
 		
 	}
 }
