@@ -131,10 +131,11 @@ extension PostMainListViewController {
 		
 		switch section {
 		case .post:
-			return createSection(itemWidth: .fractionalWidth(1),
+			return createSection(itemWidth: .fractionalWidth(1/2),
 								 itemHeight: .absolute(100),
 								 groupWidth: .fractionalWidth(1),
 								 groupHeight: .absolute(100),
+								 interItemSpace:.fixed(10),
 								 interGroupSpace: 10,
 								 sectionInsets: NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
 		}
@@ -148,6 +149,7 @@ extension PostMainListViewController {
 		groupHeight: NSCollectionLayoutDimension,
 		interItemSpace: NSCollectionLayoutSpacing = .fixed(0),
 		interGroupSpace: Double = 0,
+		scrollBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .none,
 		sectionInsets: NSDirectionalEdgeInsets = .zero) -> NSCollectionLayoutSection {
 			let itemSize = NSCollectionLayoutSize(widthDimension: itemWidth, heightDimension: itemHeight)
 			
@@ -155,16 +157,26 @@ extension PostMainListViewController {
 			
 			let groupSize = NSCollectionLayoutSize(widthDimension: groupWidth, heightDimension: groupHeight)
 			
-			let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-			
+			let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item])
+
 			group.interItemSpacing = interItemSpace
+			
 			
 			let section = NSCollectionLayoutSection(group: group)
 			
 			section.interGroupSpacing = interGroupSpace
+			
+			section.orthogonalScrollingBehavior = scrollBehaviour
 			
 			section.contentInsets = sectionInsets
 			
 			return section
 		}
 }
+
+import SwiftUI
+
+#Preview {
+	PostMainListViewController()
+}
+
